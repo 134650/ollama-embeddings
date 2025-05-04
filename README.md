@@ -1,14 +1,16 @@
-# ollama-embeddings
+# Gerador de Embeddings com Ollama
 
-# Geração de Embeddings com Ollama
+Este repositório contém um script Python que se conecta a uma instância local do [Ollama](https://ollama.com) e gera vetores de embeddings para um texto fornecido.
 
-Este projeto demonstra como instalar o Ollama localmente e gerar vetores de embeddings a partir de um texto utilizando Python.
+## Pré-requisitos
 
-## Instalação e Execução
+- Python 3.8+
+- Ollama instalado e rodando localmente
+- Modelo de embeddings carregado no Ollama (ex: `nomic-embed-text`)
 
-### 1. Instale o Ollama
-Baixe e instale em: https://ollama.com/download
+## Instalação
 
-### 2. Baixe e execute o modelo
-```bash
-ollama run nomic-embed-text
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/ollama-embeddings.git
+   cd ollama-embeddings
