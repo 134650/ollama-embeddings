@@ -1,23 +1,41 @@
-import requests
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
 
-def gerar_embeddings(texto: str, modelo: str = "nomic-embed-text"):
-    url = "http://localhost:11434/api/embeddings"
-    payload = {
-        "model": modelo,
-        "prompt": texto
-    }
+def generate_embeddings(data, method='pca', n_components=2):
+    """
+    Gera embeddings para o dados fornecidos.
 
-    response = requests.post(url, json=payload)
+    Args:
+        data (numpy.ndarray): Dados a serem transformados.
+        method (str, optional): Método de transformação. Pode ser 'pca' ou 't-sne'. Defaults to 'pca'.
+        n_components (int, optional): Número de componentes para o PCA. Defaults to 2.
 
-    if response.status_code == 200:
-        data = response.json()
-        vetor = data.get("embedding", [])
-        print(f"\nTexto: {texto}")
-        print(f"Tamanho do vetor de embeddings: {len(vetor)}")
-        print(f"Primeiros valores: {vetor[:10]}")
+    Returns:
+        numpy.ndarray: Embeddings gerados.
+    """
+    if method == 'pca':
+        pca = PCA(n_components=n_components)
+        embeddings = pca.fit_transform(data)
+    elif method == 't-sne':
+        tsne = TSNE(n_components=n_components, random_state=42)
+        embeddings = tsne.fit_transform(data)
     else:
-        print("Erro ao gerar embeddings:", response.text)
+        raise ValueError("Método de transformação inválido. Pode ser 'pca' ou 't-sne'.")
 
-if __name__ == "__main__":
-    texto_exemplo = "Exemplo de texto em português para gerar embeddings."
-    gerar_embeddings(texto_exemplo)
+    return embeddings
+
+if __name__ == '__main__':
+    # Geração de dados amostra
+    np.random.seed(42)
+    data = np.random.rand(100, 3)
+
+    # Geração de embeddings
+    embeddings_pca = generate_embeddings(data, method='pca')
+    embeddings_t_sne = generate_embeddings(data, method='t-sne')
+
+    # Impressão dos resultados
+    print("Embeddings PCA:")
+    print(embeddings_pca.shape)
+    print("Embeddings t-SNE:")
+    print(embeddings_t_sne.shape)
